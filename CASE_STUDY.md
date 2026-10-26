@@ -4,7 +4,7 @@
 
 ## Executive Summary
 
-This case study explores how artificial intelligence and machine learning can enhance a point-of-sale (POS) system for small retail businesses. Using a fictional café called "Maple Corner Café" as our example, we demonstrate practical AI applications that help managers make better decisions about inventory, staffing, pricing, and customer experience—all using completely synthetic transaction data.
+This case study explores how artificial intelligence and machine learning can enhance a point-of-sale (POS) system for small retail businesses. Using a fictional café called "Maple Corner Café" as our example, we demonstrate practical AI applications that help managers make better decisions about inventory, staffing, pricing, and customer experience—all using completely synthetic transaction data. All pricing is in GBP (£).
 
 ## Table of Contents
 
@@ -34,13 +34,13 @@ This project demonstrates how AI and machine learning can address these challeng
 
 ### 1. Sales Forecasting by Hour/Day
 
-**Problem:** Maple Corner Café experiences variable foot traffic. Mondays are slow, weekends are busy, mornings see coffee rushes, and afternoons vary. Without forecasts, the manager either overstaffs (wasting labor costs) or understaffs (poor customer service).
+**Problem:** Maple Corner Café experiences variable foot traffic. Mondays are slow, weekends are busy, mornings see coffee rushes, and afternoons vary. Without forecasts, the manager either overstaffs (wasting labour costs) or understaffs (poor customer service).
 
 **AI Solution:** Time-series forecasting using historical transaction data to predict hourly and daily sales volume.
 
 **Business Impact:**
 - Better staff scheduling aligned with predicted demand
-- Reduced labor costs during slow periods
+- Reduced labour costs during slow periods
 - Improved customer service during peak hours
 - Data-driven decisions replacing gut feelings
 
@@ -96,10 +96,10 @@ This project demonstrates how AI and machine learning can address these challeng
 
 **Problem:** Staff prefer certain shifts, but the manager needs coverage aligned with predicted demand. Manual scheduling is time-consuming and often suboptimal.
 
-**AI Solution:** Forecast-driven shift recommendations that balance predicted demand, labor budgets, and staff preferences.
+**AI Solution:** Forecast-driven shift recommendations that balance predicted demand, labour budgets, and staff preferences.
 
 **Business Impact:**
-- Reduced overstaffing costs (labor is typically 30-40% of costs)
+- Reduced overstaffing costs (labour is typically 30-40% of costs)
 - Improved employee satisfaction through better schedule fairness
 - Consistent service quality during all operating hours
 - Time saved on manual schedule creation
@@ -311,50 +311,65 @@ Only return executable Python code, no explanations."""
 
 ### Sales Forecasting Performance
 
-Tested on 90 days of synthetic data (70 days training, 20 days test):
+Tested on 90 days of synthetic data (60 days training, 30 days test):
 
 | Metric | Hourly Forecast | Daily Forecast |
 |--------|----------------|----------------|
-| **MAE** | $42.30 | $186.50 |
-| **RMSE** | $58.20 | $245.80 |
-| **MAPE** | 12.3% | 8.7% |
+| **MAE** | £25.31 | £112.89 |
+| **RMSE** | £34.08 | £131.78 |
+| **MAPE** | 30.5% | N/A |
+
+*All metrics measured on synthetic data.*
 
 **Interpretation:**
-- Hourly predictions are within ~$42 of actual (good for shift planning)
-- Daily predictions are within ~$187 (acceptable for weekly planning)
+- Hourly predictions are within ~£25 of actual (useful for shift planning guidance)
+- Daily predictions are within ~£113 (acceptable for weekly planning)
 - Model performs better on daily aggregates due to smoothed noise
+- MAPE variability reflects diverse transaction patterns in synthetic data
 
 ### Market Basket Insights
 
-Top 5 association rules discovered (on synthetic data):
+Analysed 25,783 transactions from synthetic data.
 
-| Rule | Support | Confidence | Lift | Interpretation |
-|------|---------|------------|------|----------------|
-| Latte → Croissant | 15.2% | 68.3% | 1.82 | Strong pairing |
-| Cappuccino → Muffin | 12.8% | 61.5% | 1.65 | Breakfast combo |
-| Sandwich → Iced Tea | 10.4% | 72.1% | 1.93 | Lunch pairing |
-| Espresso → Biscotti | 8.7% | 58.9% | 1.54 | Afternoon snack |
-| Cold Brew → Cookie | 9.2% | 55.6% | 1.48 | Casual treat |
+**Frequent Itemsets Found:** 26  
+**Association Rules Generated:** 0 (with min_support=0.02, min_confidence=0.3, min_lift=1.0)
 
-**Business Actions:**
-- Create "Latte & Croissant" combo deals (18% lift potential)
-- Train staff to suggest tea with sandwiches
-- Place biscotti near espresso machine
+**Most Frequent Product Pair:**
+- **Croissant + Latte**: 2.10% co-occurrence rate
+
+*Measured on synthetic data with UK product catalogue.*
+
+**Interpretation:**
+- Basket analysis successfully identifies frequent item combinations
+- Low association rule count reflects realistic independent purchasing patterns in the synthetic data
+- The most common pairing (Croissant + Latte) represents a classic café breakfast combination
+- In production, different thresholds and time periods would be tested to balance actionable insights with statistical significance
+
+**Potential Business Actions:**
+- Promote "Coffee & Pastry" breakfast bundles based on observed co-purchases
+- Test product placement strategies (e.g., pastries near coffee counter)
+- Monitor basket patterns over time to identify seasonal trends
 
 ### Anomaly Detection Results
 
-On 10,000 synthetic transactions with 150 refunds:
+On 25,783 synthetic transactions:
 
-- **True anomalies planted:** 12 (unusually large refunds, late-night refunds)
-- **Anomalies detected:** 15
-- **False positives:** 3 (legitimate but unusual refunds)
-- **Precision:** 80% (12/15)
-- **Recall:** 100% (12/12)
+- **Total refunds:** 391 (1.52% refund rate)
+- **Anomalies detected:** 64 (16.4% of refunds flagged)
+- **Total refund amount:** £3,992.95
+
+*All metrics measured on synthetic data.*
+
+**Sample Anomaly Reasons:**
+- Unusually large refund amounts (>£25)
+- Pattern deviations from typical refund behaviour
+- Multiple refunds from same staff member in short period
 
 **Interpretation:**
-- System catches all suspicious refunds planted in synthetic data
-- Low false positive rate means reviewable workload (15 out of 150 refunds)
-- In production, would require human review of flagged transactions
+- System successfully identifies outlier refund patterns in synthetic data
+- 16% flagging rate provides manageable review workload (64 of 391 refunds)
+- Anomaly detection requires human review to determine if flagged transactions represent actual issues
+- In production, threshold tuning would balance sensitivity with investigation capacity
 
 ### Natural Language Query Examples
 
@@ -366,7 +381,7 @@ Sample questions answered correctly (on synthetic data):
 ✅ "What was the average transaction value on weekends vs weekdays?"  
 ✅ "How many refunds did we have yesterday?"  
 
-**Accuracy:** ~85% on test questions (15% required rephrasing or produced incorrect code)
+**Note:** Demo includes offline mock mode that works without API key, demonstrating the interface pattern.
 
 **Limitations:**
 - Complex multi-step queries sometimes fail
@@ -387,9 +402,9 @@ Sample questions answered correctly (on synthetic data):
 **Mitigations (Production System):**
 - Aggregate analytics where possible (avoid individual transaction tracking)
 - Access controls and audit logs for sensitive queries
-- Data anonymization and pseudonymization
-- Compliance with GDPR, CCPA, and payment card industry (PCI) standards
-- Clear data retention and deletion policies
+- Data anonymisation and pseudonymisation
+- Compliance with UK GDPR, ICO guidelines, and Payment Card Industry Data Security Standard (PCI DSS)
+- Clear data retention and deletion policies per UK data protection requirements
 
 ### Bias & Fairness
 
@@ -529,7 +544,7 @@ If I were to expand this project, I would add:
 
 2. **Advanced basket analysis:**
    - Sequence mining (what do customers buy next trip?)
-   - Collaborative filtering for personalized recommendations
+   - Collaborative filtering for personalised recommendations
    - Price elasticity modeling for dynamic pricing
 
 3. **Better anomaly detection:**
@@ -555,8 +570,8 @@ If I were to expand this project, I would add:
    - Transfer learning (use data from established stores to forecast new ones)
    - Regional supply chain optimization
 
-7. **Employee scheduling optimizer:**
-   - Constraint satisfaction for staff preferences, labor laws, budget
+7. **Employee scheduling optimiser:**
+   - Constraint satisfaction for staff preferences, labour laws, budget
    - Shift-swapping marketplace for employees
    - Fatigue modeling (avoid back-to-back closing/opening shifts)
 

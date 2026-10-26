@@ -1,6 +1,7 @@
 """
 AI-Powered POS Analytics Demo
 Demonstrates forecasting, basket analysis, anomaly detection, and LLM queries.
+All amounts in GBP (£).
 """
 
 import pandas as pd
@@ -47,31 +48,31 @@ def demo_sales_forecasting(transactions: pd.DataFrame):
     print("\n📊 Peak Sales Hours:")
     peak_hours = forecaster.get_peak_hours(top_n=5)
     for idx, row in peak_hours.iterrows():
-        print(f"  {int(row['hour']):02d}:00 - ${row['avg_sales']:,.2f} average sales")
+        print(f"  {int(row['hour']):02d}:00 - £{row['avg_sales']:,.2f} average sales")
     
     # Show busiest days
     print("\n📊 Busiest Days of Week:")
     busiest_days = forecaster.get_busiest_days()
     for idx, row in busiest_days.iterrows():
-        print(f"  {row['day_name']:10s} - ${row['avg_sales']:,.2f} average sales")
+        print(f"  {row['day_name']:10s} - £{row['avg_sales']:,.2f} average sales")
     
     # Evaluate on test set
     print("\n📈 Forecast Performance on Test Set:")
     metrics = forecaster.evaluate(test_df)
     print(f"  Hourly Forecast:")
-    print(f"    MAE:  ${metrics['hourly_mae']:.2f}")
-    print(f"    RMSE: ${metrics['hourly_rmse']:.2f}")
+    print(f"    MAE:  £{metrics['hourly_mae']:.2f}")
+    print(f"    RMSE: £{metrics['hourly_rmse']:.2f}")
     print(f"    MAPE: {metrics['hourly_mape']:.1f}%")
     print(f"\n  Daily Forecast:")
-    print(f"    MAE:  ${metrics['daily_mae']:.2f}")
-    print(f"    RMSE: ${metrics['daily_rmse']:.2f}")
+    print(f"    MAE:  £{metrics['daily_mae']:.2f}")
+    print(f"    RMSE: £{metrics['daily_rmse']:.2f}")
     print(f"    MAPE: {metrics['daily_mape']:.1f}%")
     
     # Forecast next 7 days
     print("\n🔮 7-Day Sales Forecast:")
     daily_forecast = forecaster.forecast_daily(num_days=7)
     for idx, row in daily_forecast.iterrows():
-        print(f"  {row['day_name']:10s} - ${row['forecast_sales']:,.2f}")
+        print(f"  {row['day_name']:10s} - £{row['forecast_sales']:,.2f}")
     
     # Visualize hourly patterns
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
@@ -79,13 +80,13 @@ def demo_sales_forecasting(transactions: pd.DataFrame):
     peak_hours.plot(x='hour', y='avg_sales', kind='bar', ax=ax1, color='steelblue')
     ax1.set_title('Average Sales by Hour', fontsize=14, fontweight='bold')
     ax1.set_xlabel('Hour of Day')
-    ax1.set_ylabel('Average Sales ($)')
+    ax1.set_ylabel('Average Sales (£)')
     ax1.set_xticklabels([f"{h:02d}:00" for h in peak_hours['hour']], rotation=45)
     
     busiest_days.plot(x='day_name', y='avg_sales', kind='bar', ax=ax2, color='coral')
     ax2.set_title('Average Sales by Day of Week', fontsize=14, fontweight='bold')
     ax2.set_xlabel('Day of Week')
-    ax2.set_ylabel('Average Sales ($)')
+    ax2.set_ylabel('Average Sales (£)')
     ax2.set_xticklabels(busiest_days['day_name'], rotation=45)
     
     plt.tight_layout()
@@ -98,7 +99,7 @@ def demo_basket_analysis(transactions: pd.DataFrame):
     print_section("2. MARKET BASKET ANALYSIS")
     
     print("Analyzing purchase patterns...")
-    analyzer = BasketAnalyzer(min_support=0.05, min_confidence=0.5, min_lift=1.0)
+    analyzer = BasketAnalyzer(min_support=0.02, min_confidence=0.3, min_lift=1.0)
     analyzer.train(transactions)
     
     # Statistics
@@ -179,7 +180,7 @@ def demo_anomaly_detection(transactions: pd.DataFrame):
     print(f"  Total Transactions: {stats['total_transactions']:,}")
     print(f"  Refund Transactions: {stats['refund_transactions']:,}")
     print(f"  Refund Rate: {stats['refund_rate']:.2%}")
-    print(f"  Total Refund Amount: ${stats['total_refund_amount']:,.2f}")
+    print(f"  Total Refund Amount: £{stats['total_refund_amount']:,.2f}")
     print(f"  Refund Amount Rate: {stats['refund_amount_rate']:.2%}")
     
     if 'anomalous_refunds' in stats:
@@ -209,7 +210,7 @@ def demo_anomaly_detection(transactions: pd.DataFrame):
             print(f"\n  Transaction: {row['transaction_id']}")
             print(f"    Time: {row['timestamp']}")
             print(f"    Staff: {row['staff_name']}")
-            print(f"    Amount: ${abs(row['total']):.2f}")
+            print(f"    Amount: £{abs(row['total']):.2f}")
             print(f"    Reason: {row['anomaly_explanation']}")
     else:
         print("\n✅ No anomalous refunds detected")

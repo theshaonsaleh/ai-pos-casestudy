@@ -90,11 +90,11 @@ def show_overview(transactions):
     num_products = transactions['product_name'].nunique()
     
     with col1:
-        st.metric("Total Sales", f"${total_sales:,.2f}")
+        st.metric("Total Sales", f"£{total_sales:,.2f}")
     with col2:
         st.metric("Transactions", f"{num_transactions:,}")
     with col3:
-        st.metric("Avg Transaction", f"${avg_transaction:.2f}")
+        st.metric("Avg Transaction", f"£{avg_transaction:.2f}")
     with col4:
         st.metric("Products", num_products)
     
@@ -104,7 +104,7 @@ def show_overview(transactions):
     daily_sales = transactions[transactions['is_refund'] == False].groupby('date')['total'].sum().reset_index()
     fig = px.line(daily_sales, x='date', y='total', 
                   title='Daily Sales Trend',
-                  labels={'date': 'Date', 'total': 'Sales ($)'})
+                  labels={'date': 'Date', 'total': 'Sales (£)'})
     fig.update_traces(line_color='#1f77b4', line_width=2)
     st.plotly_chart(fig, use_container_width=True)
     
@@ -124,7 +124,7 @@ def show_overview(transactions):
         fig = px.bar(top_products, x='total', y='product_name', 
                      orientation='h',
                      title='Top Products by Revenue',
-                     labels={'total': 'Revenue ($)', 'product_name': 'Product'})
+                     labels={'total': 'Revenue (£)', 'product_name': 'Product'})
         fig.update_layout(yaxis={'categoryorder': 'total ascending'})
         st.plotly_chart(fig, use_container_width=True)
 
@@ -145,11 +145,11 @@ def show_forecasting(transactions, forecaster):
         peak_hours['hour_label'] = peak_hours['hour'].apply(lambda x: f"{x:02d}:00")
         fig = px.bar(peak_hours, x='hour_label', y='avg_sales',
                      title='Average Sales by Hour',
-                     labels={'hour_label': 'Hour', 'avg_sales': 'Average Sales ($)'})
+                     labels={'hour_label': 'Hour', 'avg_sales': 'Average Sales (£)'})
         st.plotly_chart(fig, use_container_width=True)
         
         st.dataframe(peak_hours[['hour_label', 'avg_sales']].rename(
-            columns={'hour_label': 'Hour', 'avg_sales': 'Avg Sales ($)'}
+            columns={'hour_label': 'Hour', 'avg_sales': 'Avg Sales (£)'}
         ), hide_index=True, use_container_width=True)
     
     with col2:
@@ -157,13 +157,13 @@ def show_forecasting(transactions, forecaster):
         busiest_days = forecaster.get_busiest_days()
         fig = px.bar(busiest_days, x='day_name', y='avg_sales',
                      title='Average Sales by Day of Week',
-                     labels={'day_name': 'Day', 'avg_sales': 'Average Sales ($)'},
+                     labels={'day_name': 'Day', 'avg_sales': 'Average Sales (£)'},
                      color='avg_sales',
                      color_continuous_scale='Blues')
         st.plotly_chart(fig, use_container_width=True)
         
         st.dataframe(busiest_days[['day_name', 'avg_sales']].rename(
-            columns={'day_name': 'Day', 'avg_sales': 'Avg Sales ($)'}
+            columns={'day_name': 'Day', 'avg_sales': 'Avg Sales (£)'}
         ), hide_index=True, use_container_width=True)
     
     st.subheader("🔮 7-Day Forecast")
@@ -171,13 +171,13 @@ def show_forecasting(transactions, forecaster):
     
     fig = px.bar(forecast_df, x='day_name', y='forecast_sales',
                  title='Next 7 Days Sales Forecast',
-                 labels={'day_name': 'Day', 'forecast_sales': 'Forecast Sales ($)'},
+                 labels={'day_name': 'Day', 'forecast_sales': 'Forecast Sales (£)'},
                  color='forecast_sales',
                  color_continuous_scale='Viridis')
     st.plotly_chart(fig, use_container_width=True)
     
     st.dataframe(forecast_df[['day_name', 'date', 'forecast_sales']].rename(
-        columns={'day_name': 'Day', 'date': 'Date', 'forecast_sales': 'Forecast ($)'}
+        columns={'day_name': 'Day', 'date': 'Date', 'forecast_sales': 'Forecast (£)'}
     ), hide_index=True, use_container_width=True)
 
 
@@ -279,7 +279,7 @@ def show_anomaly_detection(transactions, detector):
     with col2:
         st.metric("Total Refunds", stats['refund_transactions'])
     with col3:
-        st.metric("Refund Amount", f"${stats['total_refund_amount']:,.2f}")
+        st.metric("Refund Amount", f"£{stats['total_refund_amount']:,.2f}")
     with col4:
         if 'anomalous_refunds' in stats:
             st.metric("Anomalies", stats['anomalous_refunds'])
@@ -299,7 +299,7 @@ def show_anomaly_detection(transactions, detector):
     
     display_staff = staff_analysis.copy()
     display_staff['refund_rate'] = display_staff['refund_rate'].apply(lambda x: f"{x:.2%}")
-    display_staff['refund_amount'] = display_staff['refund_amount'].apply(lambda x: f"${x:.2f}")
+    display_staff['refund_amount'] = display_staff['refund_amount'].apply(lambda x: f"£{x:.2f}")
     
     st.dataframe(display_staff[[
         'staff_name', 'total_transactions', 'refund_transactions', 
@@ -320,7 +320,7 @@ def show_anomaly_detection(transactions, detector):
         st.warning(f"Found {len(anomalous)} anomalous refund(s) requiring review:")
         
         display_anomalous = anomalous.copy()
-        display_anomalous['total'] = display_anomalous['total'].apply(lambda x: f"${abs(x):.2f}")
+        display_anomalous['total'] = display_anomalous['total'].apply(lambda x: f"£{abs(x):.2f}")
         display_anomalous['timestamp'] = display_anomalous['timestamp'].dt.strftime('%Y-%m-%d %H:%M')
         
         st.dataframe(display_anomalous[[

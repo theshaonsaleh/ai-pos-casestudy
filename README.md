@@ -2,7 +2,7 @@
 
 **Personal learning project, non-commercial, not affiliated with any business. All data is fictional.**
 
-This project demonstrates how artificial intelligence and machine learning can enhance a point-of-sale (POS) system for small retail businesses. Using a fictional café called "Maple Corner Café" as an example, we explore practical AI applications including sales forecasting, market basket analysis, refund anomaly detection, and natural language queries—all using completely synthetic data.
+This project demonstrates how artificial intelligence and machine learning can enhance a point-of-sale (POS) system for small retail businesses. Using a fictional café called "Maple Corner Café" as an example, we explore practical AI applications including sales forecasting, market basket analysis, refund anomaly detection, and natural language queries—all using completely synthetic data. All pricing in GBP (£).
 
 ## 🎯 What This Project Demonstrates
 
@@ -131,7 +131,7 @@ This is a **learning project only**:
 - No commercial use or affiliation with any company
 
 **Production considerations** covered in the case study:
-- Data privacy and GDPR/CCPA compliance
+- Data privacy and UK GDPR/ICO compliance
 - Bias detection and fairness
 - Human oversight requirements
 - Model monitoring and maintenance

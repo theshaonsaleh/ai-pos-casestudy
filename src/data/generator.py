@@ -1,6 +1,7 @@
 """
 Synthetic POS Data Generator for Maple Corner Café
 Generates realistic transaction data with temporal patterns, basket correlations, and staff assignments.
+All prices in GBP (£).
 """
 
 import pandas as pd
@@ -20,44 +21,46 @@ class POSDataGenerator:
         # Fictional café: Maple Corner Café
         self.store_name = "Maple Corner Café"
         
-        # Product catalog with categories and prices
+        # Product catalogue with categories and prices (UK pricing in GBP)
         self.products = {
             # Hot Beverages
-            'Espresso': {'category': 'Hot Beverage', 'price': 3.50, 'cost': 0.80},
-            'Americano': {'category': 'Hot Beverage', 'price': 3.75, 'cost': 0.85},
-            'Latte': {'category': 'Hot Beverage', 'price': 4.50, 'cost': 1.20},
-            'Cappuccino': {'category': 'Hot Beverage', 'price': 4.50, 'cost': 1.20},
-            'Mocha': {'category': 'Hot Beverage', 'price': 5.00, 'cost': 1.50},
-            'Hot Chocolate': {'category': 'Hot Beverage', 'price': 4.00, 'cost': 1.10},
-            'Tea': {'category': 'Hot Beverage', 'price': 3.00, 'cost': 0.60},
+            'Espresso': {'category': 'Hot Beverage', 'price': 2.80, 'cost': 0.65},
+            'Americano': {'category': 'Hot Beverage', 'price': 3.00, 'cost': 0.70},
+            'Flat White': {'category': 'Hot Beverage', 'price': 3.50, 'cost': 0.95},
+            'Latte': {'category': 'Hot Beverage', 'price': 3.60, 'cost': 0.98},
+            'Cappuccino': {'category': 'Hot Beverage', 'price': 3.50, 'cost': 0.95},
+            'Mocha': {'category': 'Hot Beverage', 'price': 3.95, 'cost': 1.20},
+            'Hot Chocolate': {'category': 'Hot Beverage', 'price': 3.30, 'cost': 0.90},
+            'English Breakfast Tea': {'category': 'Hot Beverage', 'price': 2.50, 'cost': 0.50},
+            'Earl Grey Tea': {'category': 'Hot Beverage', 'price': 2.50, 'cost': 0.50},
             
             # Cold Beverages
-            'Iced Coffee': {'category': 'Cold Beverage', 'price': 4.25, 'cost': 1.00},
-            'Cold Brew': {'category': 'Cold Beverage', 'price': 4.75, 'cost': 1.30},
-            'Iced Latte': {'category': 'Cold Beverage', 'price': 5.00, 'cost': 1.40},
-            'Iced Tea': {'category': 'Cold Beverage', 'price': 3.50, 'cost': 0.70},
-            'Smoothie': {'category': 'Cold Beverage', 'price': 6.00, 'cost': 2.00},
+            'Iced Coffee': {'category': 'Cold Beverage', 'price': 3.40, 'cost': 0.80},
+            'Cold Brew': {'category': 'Cold Beverage', 'price': 3.80, 'cost': 1.05},
+            'Iced Latte': {'category': 'Cold Beverage', 'price': 3.95, 'cost': 1.10},
+            'Iced Tea': {'category': 'Cold Beverage', 'price': 2.80, 'cost': 0.55},
+            'Fruit Smoothie': {'category': 'Cold Beverage', 'price': 4.50, 'cost': 1.60},
             
             # Pastries
-            'Croissant': {'category': 'Pastry', 'price': 3.50, 'cost': 1.20},
-            'Muffin': {'category': 'Pastry', 'price': 3.75, 'cost': 1.30},
-            'Scone': {'category': 'Pastry', 'price': 3.50, 'cost': 1.20},
-            'Cinnamon Roll': {'category': 'Pastry', 'price': 4.50, 'cost': 1.50},
-            'Danish': {'category': 'Pastry', 'price': 4.00, 'cost': 1.40},
+            'Croissant': {'category': 'Pastry', 'price': 2.80, 'cost': 0.95},
+            'Pain au Chocolat': {'category': 'Pastry', 'price': 2.95, 'cost': 1.00},
+            'Blueberry Muffin': {'category': 'Pastry', 'price': 2.90, 'cost': 1.00},
+            'Scone with Jam': {'category': 'Pastry', 'price': 3.20, 'cost': 1.10},
+            'Cinnamon Bun': {'category': 'Pastry', 'price': 3.50, 'cost': 1.20},
             
             # Food
-            'Bagel with Cream Cheese': {'category': 'Food', 'price': 5.00, 'cost': 1.80},
-            'Breakfast Sandwich': {'category': 'Food', 'price': 7.50, 'cost': 3.00},
-            'Turkey Sandwich': {'category': 'Food', 'price': 8.50, 'cost': 3.50},
-            'Veggie Wrap': {'category': 'Food', 'price': 8.00, 'cost': 3.20},
-            'Soup of the Day': {'category': 'Food', 'price': 6.50, 'cost': 2.50},
-            'Salad': {'category': 'Food', 'price': 9.00, 'cost': 3.80},
+            'Cheese Toastie': {'category': 'Food', 'price': 5.50, 'cost': 2.20},
+            'Bacon Butty': {'category': 'Food', 'price': 4.95, 'cost': 2.00},
+            'Ploughman\'s Sandwich': {'category': 'Food', 'price': 6.50, 'cost': 2.80},
+            'Coronation Chicken Wrap': {'category': 'Food', 'price': 6.95, 'cost': 2.95},
+            'Jacket Potato with Beans': {'category': 'Food', 'price': 5.75, 'cost': 2.10},
+            'Seasonal Salad': {'category': 'Food', 'price': 7.25, 'cost': 3.10},
             
             # Snacks
-            'Cookie': {'category': 'Snack', 'price': 2.50, 'cost': 0.80},
-            'Brownie': {'category': 'Snack', 'price': 3.50, 'cost': 1.20},
-            'Biscotti': {'category': 'Snack', 'price': 2.75, 'cost': 0.90},
-            'Granola Bar': {'category': 'Snack', 'price': 2.00, 'cost': 0.70},
+            'Shortbread Biscuit': {'category': 'Snack', 'price': 1.80, 'cost': 0.60},
+            'Chocolate Brownie': {'category': 'Snack', 'price': 2.95, 'cost': 1.00},
+            'Flapjack': {'category': 'Snack', 'price': 2.50, 'cost': 0.85},
+            'Crisps': {'category': 'Snack', 'price': 1.50, 'cost': 0.55},
         }
         
         # Staff (fictional names)
@@ -72,14 +75,16 @@ class POSDataGenerator:
         
         # Market basket associations (products that go together)
         self.basket_rules = {
-            'Latte': ['Croissant', 'Muffin', 'Cookie'],
-            'Cappuccino': ['Muffin', 'Scone', 'Biscotti'],
-            'Espresso': ['Biscotti', 'Cookie'],
-            'Cold Brew': ['Cookie', 'Brownie'],
-            'Breakfast Sandwich': ['Americano', 'Latte'],
-            'Turkey Sandwich': ['Iced Tea', 'Iced Coffee'],
-            'Veggie Wrap': ['Iced Tea', 'Smoothie'],
-            'Salad': ['Iced Tea', 'Iced Latte'],
+            'Latte': ['Croissant', 'Blueberry Muffin', 'Shortbread Biscuit'],
+            'Flat White': ['Croissant', 'Pain au Chocolat'],
+            'Cappuccino': ['Blueberry Muffin', 'Scone with Jam', 'Flapjack'],
+            'Espresso': ['Shortbread Biscuit', 'Chocolate Brownie'],
+            'English Breakfast Tea': ['Scone with Jam', 'Shortbread Biscuit'],
+            'Cold Brew': ['Chocolate Brownie', 'Flapjack'],
+            'Bacon Butty': ['Americano', 'English Breakfast Tea'],
+            'Ploughman\'s Sandwich': ['Iced Tea', 'Crisps'],
+            'Coronation Chicken Wrap': ['Iced Tea', 'Fruit Smoothie'],
+            'Seasonal Salad': ['Iced Tea', 'Iced Latte'],
         }
     
     def _get_hourly_traffic_multiplier(self, hour: int, day_of_week: int) -> float:
@@ -139,22 +144,25 @@ class POSDataGenerator:
         
         # Time-based primary product selection
         if 6 <= hour < 10:  # Morning: hot drinks + breakfast
-            beverage_probs = {'Latte': 0.25, 'Cappuccino': 0.25, 'Americano': 0.2, 
-                            'Espresso': 0.1, 'Tea': 0.15, 'Hot Chocolate': 0.05}
-            food_probs = {'Croissant': 0.3, 'Muffin': 0.25, 'Bagel with Cream Cheese': 0.2,
-                         'Breakfast Sandwich': 0.15, 'Scone': 0.1}
+            beverage_probs = {'Latte': 0.2, 'Flat White': 0.2, 'Cappuccino': 0.15, 
+                            'Americano': 0.15, 'English Breakfast Tea': 0.15, 
+                            'Espresso': 0.08, 'Hot Chocolate': 0.07}
+            food_probs = {'Croissant': 0.25, 'Pain au Chocolat': 0.2, 'Blueberry Muffin': 0.2,
+                         'Bacon Butty': 0.2, 'Scone with Jam': 0.15}
         elif 10 <= hour < 14:  # Midday: varied drinks + lunch items
-            beverage_probs = {'Iced Coffee': 0.2, 'Latte': 0.15, 'Cold Brew': 0.15,
-                            'Iced Tea': 0.15, 'Cappuccino': 0.1, 'Smoothie': 0.1,
-                            'Americano': 0.1, 'Tea': 0.05}
-            food_probs = {'Turkey Sandwich': 0.25, 'Veggie Wrap': 0.2, 'Salad': 0.2,
-                         'Soup of the Day': 0.15, 'Bagel with Cream Cheese': 0.1,
-                         'Breakfast Sandwich': 0.1}
+            beverage_probs = {'Iced Coffee': 0.18, 'Latte': 0.15, 'Cold Brew': 0.15,
+                            'Iced Tea': 0.15, 'Cappuccino': 0.1, 'Fruit Smoothie': 0.12,
+                            'Americano': 0.1, 'English Breakfast Tea': 0.05}
+            food_probs = {'Ploughman\'s Sandwich': 0.25, 'Coronation Chicken Wrap': 0.2, 
+                         'Seasonal Salad': 0.2, 'Cheese Toastie': 0.18,
+                         'Jacket Potato with Beans': 0.17}
         else:  # Afternoon/evening: cold drinks + snacks
-            beverage_probs = {'Iced Coffee': 0.25, 'Cold Brew': 0.2, 'Iced Latte': 0.15,
-                            'Latte': 0.15, 'Tea': 0.1, 'Smoothie': 0.1, 'Espresso': 0.05}
-            food_probs = {'Cookie': 0.25, 'Brownie': 0.2, 'Muffin': 0.15,
-                         'Biscotti': 0.15, 'Croissant': 0.15, 'Cinnamon Roll': 0.1}
+            beverage_probs = {'Iced Coffee': 0.2, 'Cold Brew': 0.18, 'Iced Latte': 0.15,
+                            'Latte': 0.15, 'English Breakfast Tea': 0.12, 
+                            'Fruit Smoothie': 0.1, 'Espresso': 0.1}
+            food_probs = {'Shortbread Biscuit': 0.25, 'Chocolate Brownie': 0.2, 
+                         'Blueberry Muffin': 0.2, 'Flapjack': 0.18, 
+                         'Croissant': 0.12, 'Cinnamon Bun': 0.05}
         
         # Select primary beverage
         beverage = np.random.choice(list(beverage_probs.keys()), 
